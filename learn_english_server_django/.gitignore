@@ -1,0 +1,45 @@
+# Virtual environment
+venv/
+env/
+*.env
+
+# Python-related files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*.cpython
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Test coverage reports
+htmlcov/
+.coverage
+*.cover
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.swp
+
+# Database files
+*.sqlite3
+# System files
+.DS_Store
+Thumbs.db
+
+# Git-related files
+.git/
+# .gitignore

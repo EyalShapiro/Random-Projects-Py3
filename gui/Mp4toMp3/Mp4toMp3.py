@@ -70,4 +70,6 @@ Button(
     font="Verdana 10 bold",
 ).place(x=130, y=290)
 
-root.mainloop()
+if __name__ == "__main__":
+
+    root.mainloop()

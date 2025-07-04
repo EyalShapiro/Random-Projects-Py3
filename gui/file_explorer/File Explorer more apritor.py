@@ -21,33 +21,23 @@ from tkinter import (
 
 
 def open_a_file():
-    files = fd.askopenfilename(
-        title="Select a file of any type", filetypes=[("All files", "*.*")]
-    )
+    files = fd.askopenfilename(title="Select a file of any type", filetypes=[("All files", "*.*")])
     os.startfile(os.path.abspath(files))
 
 
 def copy_a_file():
-    copythefile = fd.askopenfilename(
-        title="Select a file to copy", filetypes=[("All files", "*.*")]
-    )
+    copythefile = fd.askopenfilename(title="Select a file to copy", filetypes=[("All files", "*.*")])
     dir_to_paste = fd.askdirectory(title="Select the folder to paste the file")
     try:
         shutil.copy(copythefile, dir_to_paste)
-        mb.showinfo(
-            title="File copied!", message="The file has been copied to the destination."
-        )
+        mb.showinfo(title="File copied!", message="The file has been copied to the destination.")
     except Exception as err:
-        mb.showerror(
-            title="Error!", message="File is unable to copy. Please try again!"
-        )
+        mb.showerror(title="Error!", message="File is unable to copy. Please try again!")
         print(err)
 
 
 def delete_a_file():
-    files = fd.askopenfilename(
-        title="Choose a file to delete", filetypes=[("All files", "*.*")]
-    )
+    files = fd.askopenfilename(title="Choose a file to delete", filetypes=[("All files", "*.*")])
     os.remove(os.path.abspath(files))
     mb.showinfo(title="File deleted!", message="The selected file has been deleted.")
 
@@ -94,9 +84,7 @@ def rename_a_file():
 
 
 def show_file_path():
-    files = fd.askopenfilename(
-        title="Select the file to rename", filetypes=[("All files", "*.*")]
-    )
+    files = fd.askopenfilename(title="Select the file to rename", filetypes=[("All files", "*.*")])
     return files
 
 
@@ -104,9 +92,7 @@ def name_submit():
     rename_name = fileNameEntered.get()
     fileNameEntered.set("")
     file_name = show_file_path()
-    new_file_name = os.path.join(
-        os.path.dirname(file_name), rename_name + os.path.splitext(file_name)[1]
-    )
+    new_file_name = os.path.join(os.path.dirname(file_name), rename_name + os.path.splitext(file_name)[1])
     os.rename(file_name, new_file_name)
     mb.showinfo(title="File Renamed!", message="The selected file has been renamed.")
 
@@ -124,9 +110,7 @@ def delete_a_folder():
 
 def move_a_folder():
     folder_to_move = fd.askdirectory(title="Select the folder you want to move")
-    mb.showinfo(
-        message="Folder has been selected to move. Now, select the desired destination."
-    )
+    mb.showinfo(message="Folder has been selected to move. Now, select the desired destination.")
     des = fd.askdirectory(title="Destination")
     try:
         shutil.move(folder_to_move, des)

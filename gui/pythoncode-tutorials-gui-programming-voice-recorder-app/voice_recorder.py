@@ -8,6 +8,9 @@ from datetime import datetime
 import time
 import os
 
+IMG_RECORDER = "recorder.png"
+FILE_WAV = "recording.wav"
+
 
 class VoiceRecorderApp:
     def __init__(self):
@@ -19,6 +22,9 @@ class VoiceRecorderApp:
         self.setup_styles()
         self.setup_canvas()
         self.setup_widgets()
+        self.run()
+
+    def run(self):
         self.window.mainloop()
 
     def close_window(self):
@@ -30,9 +36,7 @@ class VoiceRecorderApp:
 
     def setup_styles(self):
         self.label_style = ttk.Style()
-        self.label_style.configure(
-            "TLabel", foreground="#000000", font=("OCR A Extended", 15)
-        )
+        self.label_style.configure("TLabel", foreground="#000000", font=("OCR A Extended", 15))
         self.entry_style = ttk.Style()
         self.entry_style.configure("TEntry", font=("Dotum", 15))
         self.button_style = ttk.Style()
@@ -41,20 +45,16 @@ class VoiceRecorderApp:
     def setup_canvas(self):
         self.canvas = Canvas(self.window, width=500, height=400)
         self.canvas.pack()
-        self.logo = PhotoImage(file="\\recorder.png").subsample(2, 2)
+        self.logo = PhotoImage(file=IMG_RECORDER).subsample(2, 2)
         self.canvas.create_image(240, 135, image=self.logo)
 
     def setup_widgets(self):
-        self.duration_label = ttk.Label(
-            self.window, text="Enter Recording Duration in Sec(int):", style="TLabel"
-        )
+        self.duration_label = ttk.Label(self.window, text="Enter Recording Duration in Sec(int):", style="TLabel")
         self.duration_entry = ttk.Entry(self.window, width=76, style="TEntry")
         self.canvas.create_window(240, 300, window=self.duration_label)
         self.canvas.create_window(250, 325, window=self.duration_entry)
         self.progress_label = ttk.Label(self.window, text="")
-        self.record_button = ttk.Button(
-            self.window, text="Record", style="TButton", command=self.recording_thread
-        )
+        self.record_button = ttk.Button(self.window, text="Record", style="TButton", command=self.recording_thread)
         self.canvas.create_window(242, 365, window=self.progress_label)
         self.canvas.create_window(240, 410, window=self.record_button)
 
@@ -64,16 +64,15 @@ class VoiceRecorderApp:
             duration = int(self.duration_entry.get())
             recording = sounddevice.rec(duration * freq, samplerate=freq, channels=2)
             counter = 0
-            file_wav = "\\recording.wav"
             while counter < duration:
                 self.window.update()
                 time.sleep(1)
                 counter += 1
                 self.progress_label.config(text=str(counter))
             sounddevice.wait()
-            write(file_wav, freq, recording)
+            write(FILE_WAV, freq, recording)
             for file in os.listdir():
-                if file == file_wav:
+                if file == FILE_WAV:
                     base, ext = os.path.splitext(file)
                     current_time = datetime.now()
                     new_name = (
@@ -88,7 +87,7 @@ class VoiceRecorderApp:
                     os.rename(file, new_name)
             showinfo("Recording complete", "Your recording is complete")
         except Exception as err:
-            print(err)
+            print("Error:", err)
             showerror(
                 title="Error",
                 message="An error occurred"
@@ -102,4 +101,6 @@ class VoiceRecorderApp:
         t1.start()
 
 
-app = VoiceRecorderApp()
+if __name__ == "__main__":
+    app = VoiceRecorderApp()
+    app.run()

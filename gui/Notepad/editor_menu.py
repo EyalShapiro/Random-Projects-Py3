@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from tkinter import colorchooser, messagebox, filedialog, Menu
+from tkinter import colorchooser, filedialog, Menu
 import webbrowser
 
 
@@ -23,9 +23,7 @@ class EditorMenu:
         self.edit_menu.add_command(label="Copy", command=self.__copy)
         self.edit_menu.add_command(label="Paste", command=self.__paste)
         self.edit_menu.add_separator()
-        self.edit_menu.add_command(
-            label="Change Text Color", command=self.__change_text_color
-        )
+        self.edit_menu.add_command(label="Change Text Color", command=self.__change_text_color)
 
         self.help_menu.add_command(label="About Notepad", command=self.__show_about)
 
@@ -54,9 +52,7 @@ class EditorMenu:
         frame.pack(fill="both", expand=True)
 
         # Add a title label
-        title_label = tk.Label(
-            frame, text="About Notepad", font=("Arial", 14, "bold"), bg="#f0f0f0"
-        )
+        title_label = tk.Label(frame, text="About Notepad", font=("Arial", 14, "bold"), bg="#f0f0f0")
         title_label.pack(pady=(0, 10))
 
         # Add the name label
@@ -120,6 +116,15 @@ class EditorMenu:
             with open(self.file, "w") as file:
                 file.write(self.text_area.get(1.0, tk.END))
 
+    def __getCurrent_tags(self):
+        try:
+            current_tags = self.text_area.tag_names("sel.first")
+            if current_tags is None:
+                return ("",)
+            return current_tags
+        except tk.TclError:
+            return ("",)
+
     def __cut(self):
         self.text_area.event_generate("<<Cut>>")
 
@@ -130,7 +135,8 @@ class EditorMenu:
         self.text_area.event_generate("<<Paste>>")
 
     def __italic_text(self):
-        current_tags = self.text_area.tag_names("sel.first")
+        current_tags = self.__getCurrent_tags()
+
         if "italic" in current_tags:
             self.text_area.tag_remove("italic", "sel.first", "sel.last")
         else:
@@ -138,7 +144,8 @@ class EditorMenu:
             self.text_area.tag_configure("italic", font=("Helvetica", 12, "italic"))
 
     def __bold_text(self):
-        current_tags = self.text_area.tag_names("sel.first")
+        current_tags = self.__getCurrent_tags()
+
         if "bold" in current_tags:
             self.text_area.tag_remove("bold", "sel.first", "sel.last")
         else:
@@ -146,7 +153,8 @@ class EditorMenu:
             self.text_area.tag_configure("bold", font=("Helvetica", 12, "bold"))
 
     def __underline_text(self):
-        current_tags = self.text_area.tag_names("sel.first")
+        current_tags = self.__getCurrent_tags()
+
         if "underline" in current_tags:
             self.text_area.tag_remove("underline", "sel.first", "sel.last")
         else:

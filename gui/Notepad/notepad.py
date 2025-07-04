@@ -8,15 +8,13 @@ class Notepad:
     def __init__(self, **kwargs):
         self.root = tk.Tk()
         self.this_width = self.root.winfo_screenwidth()
-        self.this_height = (
-            self.root.winfo_screenheight() - 50
-        )  # Adjust for the menu bar height
+        self.this_height = self.root.winfo_screenheight() - 50  # Adjust for the menu bar height
         self.this_text_area = Text(self.root, font=("Helvetica", 12))
         self.this_scroll_bar = Scrollbar(self.this_text_area)
         self.file = None
 
         try:
-            self.root.wm_iconbitmap("Notepad.ico")
+            self.root.wm_iconbitmap("/Notepad.ico")
         except Exception as err:
             print(err)
 
@@ -32,9 +30,7 @@ class Notepad:
         )
         self.editor_menu.setup_editor()
         # Create and display the FontSizeMenu within the root frame
-        self.font_size_menu = FontSizeMenu(
-            root=self.root, text_area=self.this_text_area
-        )
+        self.font_size_menu = FontSizeMenu(root=self.root, text_area=self.this_text_area)
         self.font_size_menu = self.font_size_menu.get_menu()
 
         # Create toolbar for font size adjustment

@@ -1,112 +1,106 @@
-from tkinter import *
 import os
 import ctypes
 import pathlib
-
-# Increase Dots Per inch so it looks sharper
-ctypes.windll.shcore.SetProcessDpiAwareness(True)
-
-root = Tk()
-# set a title for our file explorer main window
-root.title('Simple Explorer')
-
-root.grid_columnconfigure(1, weight=1)
-root.grid_rowconfigure(1, weight=1)
-
-def pathChange(*event):
-    # Get all Files and Folders from the given Directory
-    directory = os.listdir(currentPath.get())
-    # Clearing the list
-    list.delete(0, END)
-    # Inserting the files and directories into the list
-    for file in directory:
-        list.insert(0, file)
-
-def changePathByClick(event=None):
-    # Get clicked item.
-    picked = list.get(list.curselection()[0])
-    # get the complete path by joining the current path with the picked item
-    path = os.path.join(currentPath.get(), picked)
-    # Check if item is file, then open it
-    if os.path.isfile(path):
-        print('Opening: '+path)
-        os.startfile(path)
-    # Set new path, will trigger pathChange function.
-    else:
-        currentPath.set(path)
-
-def goBack(event=None):
-    # get the new path
-    newPath = pathlib.Path(currentPath.get()).parent
-    # set it to currentPath
-    currentPath.set(newPath)
-    # simple message
-    print('Going Back')
+from tkinter import Tk, Toplevel, Listbox, StringVar, Entry, Button, Label, Menu, END
 
 
-def open_popup():
-    global top
-    top = Toplevel(root)
-    top.geometry("250x150")
-    top.resizable(False, False)
-    top.title("Child Window")
-    top.columnconfigure(0, weight=1)
-    Label(top, text='Enter File or Folder name').grid()
-    Entry(top, textvariable=newFileName).grid(column=0, pady=10, sticky='NSEW')
-    Button(top, text="Create", command=newFileOrFolder).grid(pady=10, sticky='NSEW')
+class SimpleExplorer:
+    def __init__(self):
+        # DPI awareness for sharper UI
+        ctypes.windll.shcore.SetProcessDpiAwareness(True)
 
-def newFileOrFolder():
-    # check if it is a file name or a folder
-    if len(newFileName.get().split('.')) != 1:
-        open(os.path.join(currentPath.get(), newFileName.get()), 'w').close()
-    else:
-        os.mkdir(os.path.join(currentPath.get(), newFileName.get()))
-    # destroy the top
-    top.destroy()
-    pathChange()
+        self.root = Tk()
+        self.root.title("Simple Explorer")
+        self.root.geometry("600x400")
+        self.root.resizable(True, True)
 
-top = ''
+        self.root.grid_columnconfigure(1, weight=1)
+        self.root.grid_rowconfigure(1, weight=1)
 
-# String variables
-newFileName = StringVar(root, "File.dot", 'new_name')
-currentPath = StringVar(
-    root,
-    name='currentPath',
-    value=pathlib.Path.cwd()
-)
-# Bind changes in this variable to the pathChange function
-currentPath.trace('w', pathChange)
+        # State
+        self.currentPath = StringVar(self.root, name="currentPath", value=pathlib.Path.cwd())
+        self.newFileName = StringVar(self.root, "new.txt", "new_name")
+        self.currentPath.trace("w", self.pathChange)
 
-Button(root, text='Folder Up', command=goBack).grid(
-    sticky='NSEW', column=0, row=0
-)
+        # GUI Elements
+        self.setup_widgets()
 
-# Keyboard shortcut for going up
-root.bind("<Alt-Up>", goBack)
+        # Initialize with current path
+        self.pathChange()
 
-Entry(root, textvariable=currentPath).grid(
-    sticky='NSEW', column=1, row=0, ipady=10, ipadx=10
-)
+    def setup_widgets(self):
+        Button(self.root, text="Folder Up", command=self.goBack).grid(sticky="NSEW", column=0, row=0)
+        self.root.bind("<Alt-Up>", self.goBack)
 
-# List of files and folder
-list = Listbox(root)
-list.grid(sticky='NSEW', column=1, row=1, ipady=10, ipadx=10)
+        Entry(self.root, textvariable=self.currentPath).grid(sticky="NSEW", column=1, row=0, ipady=10, ipadx=10)
 
-# List Accelerators
-list.bind('<Double-1>', changePathByClick)
-list.bind('<Return>', changePathByClick)
+        self.list = Listbox(self.root)
+        self.list.grid(sticky="NSEW", column=1, row=1, ipady=10, ipadx=10)
+        self.list.bind("<Double-1>", self.changePathByClick)
+        self.list.bind("<Return>", self.changePathByClick)
+
+        menubar = Menu(self.root)
+        menubar.add_command(label="Add File or Folder", command=self.open_popup)
+        menubar.add_command(label="Quit", command=self.root.quit)
+        self.root.config(menu=menubar)
+
+    def pathChange(self, *event):
+        try:
+            directory = os.listdir(self.currentPath.get())
+            self.list.delete(0, END)
+            for file in directory:
+                self.list.insert(0, file)
+        except Exception as e:
+            print(f"Error reading directory: {e}")
+
+    def changePathByClick(self, event=None):
+        try:
+            picked = self.list.get(self.list.curselection()[0])
+            path = os.path.join(self.currentPath.get(), picked)
+            if os.path.isfile(path):
+                print("Opening:", path)
+                os.startfile(path)
+            else:
+                self.currentPath.set(path)
+        except Exception as e:
+            print(f"Error opening item: {e}")
+
+    def goBack(self, event=None):
+        newPath = pathlib.Path(self.currentPath.get()).parent
+        self.currentPath.set(str(newPath))
+        print("Going Back")
+
+    def open_popup(self):
+        self.top = Toplevel(self.root)
+        self.top.geometry("250x150")
+        self.top.resizable(False, False)
+        self.top.title("Child Window")
+        self.top.columnconfigure(0, weight=1)
+
+        Label(self.top, text="Enter File or Folder name").grid()
+        Entry(self.top, textvariable=self.newFileName).grid(column=0, pady=10, sticky="NSEW")
+        Button(self.top, text="Create", command=self.newFileOrFolder).grid(pady=10, sticky="NSEW")
+
+    def newFileOrFolder(self):
+        name = self.newFileName.get()
+        path = os.path.join(self.currentPath.get(), name)
+        try:
+            if "." in name:
+                open(path, "w").close()
+            else:
+                os.mkdir(path)
+            print(f"Created: {path}")
+        except Exception as e:
+            print(f"Error creating file/folder: {e}")
+        finally:
+            self.top.destroy()
+            self.pathChange()
+
+    def run(self):
+        self.root.mainloop()
 
 
-# Menu
-menubar = Menu(root)
-# Adding a new File button
-menubar.add_command(label="Add File or Folder", command=open_popup)
-# Adding a quit button to the Menubar
-menubar.add_command(label="Quit", command=root.quit)
-# Make the menubar the Main Menu
-root.config(menu=menubar)
-
-# Call the function so the list displays
-pathChange('')
-# run the main program
-root.mainloop()
+# Run the app
+if __name__ == "__main__":
+    app = SimpleExplorer()
+    app.run()

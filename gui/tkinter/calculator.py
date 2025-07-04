@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Button, Entry, StringVar
 
 
 def buttonClick(numbers):
@@ -15,7 +15,6 @@ def buttonClearDisplay():
 
 
 def buttonEqualsInput():
-
     try:
         global operator
 
@@ -29,6 +28,7 @@ def buttonEqualsInput():
     except Exception as err:
         # if an error is generated then handle
         # using the except block
+        print(f"Error: {err}")  # Print the error for debugging
         text_Input.set("error")
         operator = ""
 
@@ -242,15 +242,9 @@ Decimal = Button(
     text=".",
     command=lambda: buttonClick("."),
 ).grid(row=5, column=0)
-Dummy1 = Button(
-    cal, padx=16, pady=16, bd=8, fg="black", font=("arial", 20, "bold"), text="PY"
-).grid(row=5, column=1)
-Dummy2 = Button(
-    cal, padx=16, pady=16, bd=8, fg="black", font=("arial", 20, "bold"), text="TH"
-).grid(row=5, column=2)
-Dummy3 = Button(
-    cal, padx=16, pady=16, bd=8, fg="black", font=("arial", 20, "bold"), text="ON"
-).grid(row=5, column=3)
+Dummy1 = Button(cal, padx=16, pady=16, bd=8, fg="black", font=("arial", 20, "bold"), text="PY").grid(row=5, column=1)
+Dummy2 = Button(cal, padx=16, pady=16, bd=8, fg="black", font=("arial", 20, "bold"), text="TH").grid(row=5, column=2)
+Dummy3 = Button(cal, padx=16, pady=16, bd=8, fg="black", font=("arial", 20, "bold"), text="ON").grid(row=5, column=3)
 
 
 def main():
