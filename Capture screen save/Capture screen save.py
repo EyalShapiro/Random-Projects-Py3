@@ -2,8 +2,8 @@ import os
 import pyautogui
 
 MY_PATH = os.path.dirname(os.path.abspath(__file__))
-filename = "Screen.png"
-PATH_SCREEN = os.path.join(MY_PATH, filename)
+FILE_NAME = "Screen.png"
+PATH_SCREEN = os.path.join(MY_PATH, FILE_NAME)
 
 
 def main():

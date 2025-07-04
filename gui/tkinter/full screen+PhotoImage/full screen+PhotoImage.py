@@ -3,7 +3,6 @@ import tkinter as tk
 import sys
 
 if __name__ == "__main__":
-
     # creating window
     root = tk.Tk()
     filer_photo = r"./LPY.png"
@@ -14,14 +13,9 @@ if __name__ == "__main__":
     root.title("full")
 
     # Show image using label
-    tk.Label(
-        root,
-        image=bg,
-    ).place(x=50, y=50)
+    tk.Label(root, image=bg).place(x=50, y=50)
     # creating text label to display on window screen
-    label = tk.Label(
-        root, text="Hello Tkinter!", font="arial 24 bold", bg="honeydew", fg="dark cyan"
-    )
+    label = tk.Label(root, text="Hello Tkinter!", font="arial 24 bold", bg="honeydew", fg="dark cyan")
     quit = tk.Button(
         root,
         text="quit",

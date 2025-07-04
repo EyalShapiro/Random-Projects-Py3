@@ -37,21 +37,13 @@ class Notepad:
         toolbar = tk.Frame(self.root, relief=tk.RAISED, bd=2)
         toolbar.grid(row=0, column=0, sticky=tk.W + tk.E)
 
-        decrease_font_button = tk.Button(
-            master=toolbar,
-            text="-",
-            command=self.decrease_font_size,
-        )
+        decrease_font_button = tk.Button(master=toolbar, text="-", command=self.decrease_font_size)
         decrease_font_button.pack(side=tk.LEFT)
 
         self.font_size_label = tk.Label(master=toolbar, text=f"Font Size: {12}")
         self.font_size_label.pack(side=tk.LEFT, padx=5)
 
-        increase_font_button = tk.Button(
-            master=toolbar,
-            text="+",
-            command=self.increase_font_size,
-        )
+        increase_font_button = tk.Button(master=toolbar, text="+", command=self.increase_font_size)
         increase_font_button.pack(side=tk.LEFT)
 
         self.this_text_area.grid(row=1, column=0, sticky=tk.N + tk.E + tk.S + tk.W)

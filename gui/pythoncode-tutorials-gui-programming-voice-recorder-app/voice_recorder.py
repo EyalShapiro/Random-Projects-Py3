@@ -28,10 +28,7 @@ class VoiceRecorderApp:
         self.window.mainloop()
 
     def close_window(self):
-        if askokcancel(
-            title="Close Voice Recorder",
-            message="Are you sure you want to close the Voice Recorder?",
-        ):
+        if askokcancel(title="Close Voice Recorder", message="Are you sure you want to close the Voice Recorder?"):
             self.window.destroy()
 
     def setup_styles(self):

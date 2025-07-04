@@ -3,21 +3,7 @@ import shutil
 import tkinter as tk
 from tkinter import messagebox as mb
 from tkinter import filedialog as fd
-from tkinter import (
-    StringVar,
-    Toplevel,
-    Frame,
-    Label,
-    Button,
-    Entry,
-    Listbox,
-    Scrollbar,
-    END,
-    VERTICAL,
-    RIGHT,
-    Y,
-    TRUE,
-)
+from tkinter import StringVar, Toplevel, Frame, Label, Button, Entry, Listbox, Scrollbar, END, VERTICAL, RIGHT, Y, TRUE
 
 
 def open_a_file():
@@ -49,13 +35,7 @@ def rename_a_file():
     rename_win.resizable(0, 0)
     rename_win.configure(bg="#F6EAD7")
 
-    rename_label = Label(
-        rename_win,
-        text="Enter the file name:",
-        font=("Calibri", "8"),
-        bg="white",
-        fg="blue",
-    )
+    rename_label = Label(rename_win, text="Enter the file name:", font=("Calibri", "8"), bg="white", fg="blue")
     rename_label.pack(pady=4)
     rename_field = Entry(
         rename_win,
@@ -114,15 +94,9 @@ def move_a_folder():
     des = fd.askdirectory(title="Destination")
     try:
         shutil.move(folder_to_move, des)
-        mb.showinfo(
-            "Folder moved!",
-            "The selected folder has been moved to the desired Location",
-        )
+        mb.showinfo("Folder moved!", "The selected folder has been moved to the desired Location")
     except Exception as err:
-        mb.showerror(
-            "Error!",
-            "The Folder cannot be moved. Make sure that the destination exists",
-        )
+        mb.showerror("Error!", "The Folder cannot be moved. Make sure that the destination exists")
         print(err)
 
 
@@ -136,12 +110,7 @@ def list_files_in_folder():
     list_files_window.resizable(0, 0)
     list_files_window.configure(bg="white")
 
-    the_listbox = Listbox(
-        list_files_window,
-        selectbackground="#F24FBF",
-        font=("Calibri", "10"),
-        background="white",
-    )
+    the_listbox = Listbox(list_files_window, selectbackground="#F24FBF", font=("Calibri", "10"), background="white")
     the_listbox.place(relx=0, rely=0, relheight=1, relwidth=1)
 
     the_scrollbar = Scrollbar(the_listbox, orient=VERTICAL, command=the_listbox.yview)
@@ -168,13 +137,7 @@ if __name__ == "__main__":
     header_frame.pack(fill="both")
     buttons_frame.pack(expand=TRUE, fill="both")
 
-    header_label = Label(
-        header_frame,
-        text="File Explorer",
-        font=("Calibri", "16"),
-        bg="white",
-        fg="blue",
-    )
+    header_label = Label(header_frame, text="File Explorer", font=("Calibri", "16"), bg="white", fg="blue")
 
     header_label.pack(expand=TRUE, fill="both", pady=12)
 

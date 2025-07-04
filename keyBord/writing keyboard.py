@@ -4,7 +4,9 @@
 """
 
 import keyboard
+import time
 
+time.sleep(2)  # wait for 2 seconds before starting to type
 keyboard.write("eyal\n")
 
 

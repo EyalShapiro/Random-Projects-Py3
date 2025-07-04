@@ -61,12 +61,7 @@ class EditorMenu:
 
         # Add the link label
         link_label = tk.Label(
-            frame,
-            text="For more projects, visit my GitHub",
-            fg="blue",
-            underline=True,
-            cursor="hand2",
-            bg="#f0f0f0",
+            frame, text="For more projects, visit my GitHub", fg="blue", underline=True, cursor="hand2", bg="#f0f0f0"
         )
         link_label.pack(pady=(0, 10))
 
