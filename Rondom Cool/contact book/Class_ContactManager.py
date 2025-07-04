@@ -1,6 +1,23 @@
-from tkinter import ttk, messagebox
-from tkinter import *
+from re import X
+from tkinter import (
+    BOTH,
+    END,
+    RIDGE,
+    RIGHT,
+    TOP,
+    VERTICAL,
+    Y,
+    Button,
+    Entry,
+    Label,
+    Scrollbar,
+    StringVar,
+    ttk,
+    messagebox,
+)
 import sqlite3
+
+from zmq import Frame
 
 
 class ContactManager:
@@ -13,15 +30,7 @@ class ContactManager:
         self.root.attributes("-fullscreen", True)
         # Create a label with the title text and style it
         title = Label(
-            self.root,
-            text="ContactBook Management",
-            font=(
-                "Comic Sans MS",
-                20,
-            ),
-            bd=8,
-            bg="black",
-            fg="white",
+            self.root, text="ContactBook Management", font=("Comic Sans MS", 20), bd=8, bg="black", fg="white"
         )
         title.pack(side=TOP, fill=X)
         # Create StringVar variables to store the contact details
@@ -36,108 +45,33 @@ class ContactManager:
         Detail_F.place(x=10, y=120, width=350, height=260)
 
         # Create a label and entry field for the firstname
-        lbl_name = Label(
-            Detail_F,
-            text="First Name",
-            font=(
-                "Comic Sans MS",
-                12,
-            ),
-        )
+        lbl_name = Label(Detail_F, text="First Name", font=("Comic Sans MS", 12))
         lbl_name.grid(row=1, column=0, pady=10, padx=20, sticky="w")
-        txt_name = Entry(
-            Detail_F,
-            font=(
-                "Comic Sans MS",
-                10,
-            ),
-            bd=3,
-            textvariable=self.firstname,
-        )
+        txt_name = Entry(Detail_F, font=("Comic Sans MS", 10), bd=3, textvariable=self.firstname)
         txt_name.grid(row=1, column=1, pady=10, sticky="w")
 
         # Create a label and entry field for the lastname
-        lbl_mob = Label(
-            Detail_F,
-            text="Last Name",
-            font=(
-                "Comic Sans MS",
-                12,
-            ),
-        )
+        lbl_mob = Label(Detail_F, text="Last Name", font=("Comic Sans MS", 12))
         lbl_mob.grid(row=2, column=0, pady=10, padx=20, sticky="w")
-        txt_mob = Entry(
-            Detail_F,
-            font=(
-                "Comic Sans MS",
-                10,
-            ),
-            bd=3,
-            textvariable=self.lastname,
-        )
+        txt_mob = Entry(Detail_F, font=("Comic Sans MS", 10), bd=3, textvariable=self.lastname)
         txt_mob.grid(row=2, column=1, pady=10, sticky="w")
 
         # Create a label and entry field for the Mobile number
-        lbl_aa = Label(
-            Detail_F,
-            text="Mobile No.",
-            font=(
-                "Comic Sans MS",
-                12,
-            ),
-        )
+        lbl_aa = Label(Detail_F, text="Mobile No.", font=("Comic Sans MS", 12))
         lbl_aa.grid(row=3, column=0, pady=10, padx=20, sticky="w")
-        txt_aa = Entry(
-            Detail_F,
-            font=(
-                "Comic Sans MS",
-                10,
-            ),
-            bd=3,
-            textvariable=self.mobile,
-        )
+        txt_aa = Entry(Detail_F, font=("Comic Sans MS", 10), bd=3, textvariable=self.mobile)
         txt_aa.grid(row=3, column=1, pady=10, sticky="w")
 
         # Create a label and entry field for the address
-        lbl_add = Label(
-            Detail_F,
-            text="Address",
-            font=(
-                "Comic Sans MS",
-                12,
-            ),
-        )
+        lbl_add = Label(Detail_F, text="Address", font=("Comic Sans MS", 12))
         lbl_add.grid(row=4, column=0, pady=10, padx=20, sticky="w")
-        txt_add = Entry(
-            Detail_F,
-            font=(
-                "Comic Sans MS",
-                10,
-            ),
-            bd=3,
-            textvariable=self.addr,
-        )
+        txt_add = Entry(Detail_F, font=("Comic Sans MS", 10), bd=3, textvariable=self.addr)
         txt_add.grid(row=4, column=1, pady=10, sticky="w")
 
         # Create a label and entry field for the pincode
-        lbl_pin = Label(
-            Detail_F,
-            text="PinCode",
-            font=(
-                "Comic Sans MS",
-                12,
-            ),
-        )
+        lbl_pin = Label(Detail_F, text="PinCode", font=("Comic Sans MS", 12))
         lbl_pin.grid(row=5, column=0, pady=10, padx=20, sticky="w")
-        txt_pin = Entry(
-            Detail_F,
-            font=(
-                "Comic Sans MS",
-                10,
-            ),
-            bd=3,
-            textvariable=self.pin,
-        )
+        txt_pin = Entry(Detail_F, font=("Comic Sans MS", 10), bd=3, textvariable=self.pin)
         txt_pin.grid(row=5, column=1, pady=10, sticky="w")
 
         recordFrame = Frame(self.root, bd=5, relief=RIDGE)
@@ -174,55 +108,25 @@ class ContactManager:
 
         # Create a button to calculate the Details
         Button(
-            btnFrame,
-            text="Add record",
-            font="arial 12 bold",
-            bg="black",
-            fg="white",
-            width=9,
-            command=self.AddRecord,
+            btnFrame, text="Add record", font="arial 12 bold", bg="black", fg="white", width=9, command=self.AddRecord
         ).grid(row=0, column=0, padx=10, pady=10)
         # Create a button to update the Details
         Button(
-            btnFrame,
-            text="Update",
-            font="arial 12 bold",
-            bg="black",
-            fg="white",
-            width=9,
-            command=self.update,
+            btnFrame, text="Update", font="arial 12 bold", bg="black", fg="white", width=9, command=self.update
         ).grid(row=0, column=1, padx=8, pady=10)
         # Create a button to delete the entry
         Button(
-            btnFrame,
-            text="Delete",
-            font="arial 12 bold",
-            bg="black",
-            fg="white",
-            width=9,
-            command=self.delete,
+            btnFrame, text="Delete", font="arial 12 bold", bg="black", fg="white", width=9, command=self.delete
         ).grid(row=0, column=2, padx=8, pady=10)
         # Create a button to reset the fields
 
-        Button(
-            btnFrame,
-            text="Reset",
-            font="arial 12 bold",
-            bg="black",
-            fg="white",
-            width=9,
-            command=self.reset,
-        ).grid(row=0, column=3, padx=8, pady=10)
+        Button(btnFrame, text="Reset", font="arial 12 bold", bg="black", fg="white", width=9, command=self.reset).grid(
+            row=0, column=3, padx=8, pady=10
+        )
         # Create a button to exit the clos
 
         Button(
-            btnFrame,
-            text="Close",
-            font="arial 12 bold",
-            fg="snow",
-            bg="darkred",
-            width=9,
-            command=root.destroy,
+            btnFrame, text="Close", font="arial 12 bold", fg="snow", bg="darkred", width=9, command=root.destroy
         ).grid(row=0, column=4, padx=8, pady=10)
 
     def AddRecord(self):
@@ -245,13 +149,7 @@ class ContactManager:
                     return
             cur.execute(
                 "insert into contact values(?,?,?,?,?)",
-                (
-                    self.firstname.get(),
-                    self.lastname.get(),
-                    self.mobile.get(),
-                    self.addr.get(),
-                    self.pin.get(),
-                ),
+                (self.firstname.get(), self.lastname.get(), self.mobile.get(), self.addr.get(), self.pin.get()),
             )
             con.commit()
             self.fetch_data()
@@ -290,9 +188,7 @@ class ContactManager:
                 ),
             )
             # Show a success message and close the database connection
-            messagebox.showinfo(
-                "Info", f"Record {self.mobile.get()} Updated Successfully"
-            )
+            messagebox.showinfo("Info", f"Record {self.mobile.get()} Updated Successfully")
             con.commit()
             con.close()
             # Refresh the data in the table and reset the input fields
